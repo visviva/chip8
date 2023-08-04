@@ -254,39 +254,6 @@ void Chip8::OP_Cxkk()
     registers[vx] = randomByte(randomGenerator) & byte;
 }
 
-// void Chip8::OP_Dxyn()
-//{
-//     u8 vx = (opcode & 0x0F00u) >> 8u;
-//     u8 vy = (opcode & 0x00F0u) >> 4u;
-//     u8 height = opcode & 0x000Fu;
-//
-//     u8 xPos = registers[vx] % VIDEO_WIDTH;
-//     u8 yPos = registers[vy] % VIDEO_HEIGHT;
-//
-//     registers[0xF] = 0;
-//
-//     for (size_t row = 0; row < height; row++)
-//     {
-//         u8 spriteByte = memory[index + row];
-//
-//         for (size_t col = 0; col < 8; col++)
-//         {
-//             u8 spritePixel = spriteByte & (0x80 >> col);
-//             auto* screenPixel = &video[(yPos + row) * VIDEO_WIDTH + xPos + col];
-//
-//             if (spritePixel)
-//             {
-//                 if (*screenPixel == UINT32_MAX)
-//                 {
-//                     registers[0xF] = 1;
-//                 }
-//
-//                 *screenPixel ^= UINT32_MAX;
-//             }
-//         }
-//     }
-// }
-
 void Chip8::OP_Dxyn()
 {
     u8 vx = (opcode & 0x0F00u) >> 8u;
