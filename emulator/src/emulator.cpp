@@ -74,9 +74,12 @@ void Chip8::OP_2nnn()
     pc = address;
 }
 
+#define GET_VX (opcode & 0x0F00u) >> 8u
+#define GET_VY (opcode & 0x00F0u) >> 4u
+
 void Chip8::OP_3xkk()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 byte = opcode & 0x00FFu;
 
     if (registers[vx] == byte)
@@ -87,7 +90,7 @@ void Chip8::OP_3xkk()
 
 void Chip8::OP_4xkk()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 byte = opcode & 0x00FFu;
 
     if (registers[vx] != byte)
@@ -98,8 +101,8 @@ void Chip8::OP_4xkk()
 
 void Chip8::OP_5xy0()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     if (registers[vx] == registers[vy])
     {
@@ -109,7 +112,7 @@ void Chip8::OP_5xy0()
 
 void Chip8::OP_6xkk()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 byte = opcode & 0x00FFu;
 
     registers[vx] = byte;
@@ -125,40 +128,40 @@ void Chip8::OP_7xkk()
 
 void Chip8::OP_8xy0()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     registers[vx] = registers[vy];
 }
 
 void Chip8::OP_8xy1()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     registers[vx] |= registers[vy];
 }
 
 void Chip8::OP_8xy2()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     registers[vx] &= registers[vy];
 }
 
 void Chip8::OP_8xy3()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     registers[vx] ^= registers[vy];
 }
 
 void Chip8::OP_8xy4()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     u16 sum = registers[vx] + registers[vy];
 
@@ -176,8 +179,8 @@ void Chip8::OP_8xy4()
 
 void Chip8::OP_8xy5()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     if (registers[vx] > registers[vy])
     {
@@ -193,7 +196,7 @@ void Chip8::OP_8xy5()
 
 void Chip8::OP_8xy6()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
 
     registers[0xF] = (registers[vx] & 0x01u);
     registers[vx] >>= 1;
@@ -201,8 +204,8 @@ void Chip8::OP_8xy6()
 
 void Chip8::OP_8xy7()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     if (registers[vy] > registers[vx])
     {
@@ -218,7 +221,7 @@ void Chip8::OP_8xy7()
 
 void Chip8::OP_8xyE()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
 
     registers[0xF] = (registers[vx] & 0x80u) >> 7u;
     registers[vx] <<= 1;
@@ -226,8 +229,8 @@ void Chip8::OP_8xyE()
 
 void Chip8::OP_9xy0()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
 
     if (registers[vx] != registers[vy])
     {
@@ -248,7 +251,7 @@ void Chip8::OP_Bnnn()
 
 void Chip8::OP_Cxkk()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 byte = opcode & 0x00FFu;
 
     registers[vx] = randomByte(randomGenerator) & byte;
@@ -256,8 +259,8 @@ void Chip8::OP_Cxkk()
 
 void Chip8::OP_Dxyn()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
-    u8 vy = (opcode & 0x00F0u) >> 4u;
+    u8 vx = GET_VX;
+    u8 vy = GET_VY;
     u8 height = opcode & 0x000Fu;
 
     u8 xPos = registers[vx] % VIDEO_WIDTH;
@@ -291,7 +294,7 @@ void Chip8::OP_Dxyn()
 
 void chip8::Chip8::OP_Ex9E()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 key = registers[vx];
 
     if (keypad[key])
@@ -302,7 +305,7 @@ void chip8::Chip8::OP_Ex9E()
 
 void chip8::Chip8::OP_ExA1()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 key = registers[vx];
 
     if (!keypad[key])
@@ -313,13 +316,13 @@ void chip8::Chip8::OP_ExA1()
 
 void chip8::Chip8::OP_Fx07()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     registers[vx] = delayTimer;
 }
 
 void chip8::Chip8::OP_Fx0A()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
 
     for (u8 i = 0; i < keypad.size(); ++i)
     {
@@ -335,25 +338,25 @@ void chip8::Chip8::OP_Fx0A()
 
 void chip8::Chip8::OP_Fx15()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     delayTimer = registers[vx];
 }
 
 void chip8::Chip8::OP_Fx18()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     soundTimer = registers[vx];
 }
 
 void chip8::Chip8::OP_Fx1E()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     index += registers[vx];
 }
 
 void chip8::Chip8::OP_Fx29()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 digit = registers[vx];
 
     index = FONTSET_START_ADDRESS + (5 * digit);
@@ -361,7 +364,7 @@ void chip8::Chip8::OP_Fx29()
 
 void chip8::Chip8::OP_Fx33()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
     u8 value = registers[vx];
 
     memory[index + 2] = value % 10;
@@ -375,7 +378,7 @@ void chip8::Chip8::OP_Fx33()
 
 void chip8::Chip8::OP_Fx55()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
 
     for (u8 i = 0; i <= vx; ++i)
     {
@@ -385,7 +388,7 @@ void chip8::Chip8::OP_Fx55()
 
 void chip8::Chip8::OP_Fx65()
 {
-    u8 vx = (opcode & 0x0F00u) >> 8u;
+    u8 vx = GET_VX;
 
     for (u8 i = 0; i <= vx; ++i)
     {
