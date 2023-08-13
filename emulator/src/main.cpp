@@ -40,8 +40,12 @@ int main(int argc, char* argv[])
     int cycleDelay = std::stoi(argv[2]);
     char const* romFilename = argv[3];
 
-    Platform platform(
-        "CHIP-8 Emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
+    Platform platform("CHIP-8 Emulator",
+                      VIDEO_WIDTH * videoScale,
+                      VIDEO_HEIGHT * videoScale,
+                      VIDEO_WIDTH,
+                      VIDEO_HEIGHT,
+                      75 * cycleDelay);
 
     Chip8 chip8;
     chip8.LoadRom(romFilename);
@@ -65,6 +69,7 @@ int main(int argc, char* argv[])
             chip8.Cycle();
 
             platform.Update(chip8.video.data(), videoPitch);
+            platform.SoundOutput(chip8.soundTimer);
         }
     }
 

@@ -22,18 +22,31 @@
 
 #include "platform.h"
 
+#include <Windows.h>
+
 using namespace chip8;
 
-Platform::Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
+Platform::Platform(
+    char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight, int cycleTime)
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    window = SDL_CreateWindow(title, 0, 0, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(title, 100, 100, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     texture =
         SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, textureWidth, textureHeight);
+
+    beepThread = std::thread([this, cycleTime]() {
+        while (true)
+        {
+            if (beeping)
+                Beep(440, cycleTime);
+            if (close)
+                return;
+        }
+    });
 }
 
 Platform::~Platform()
@@ -42,6 +55,9 @@ Platform::~Platform()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    close = true;
+    beepThread.join();
 }
 
 void Platform::Update(void const* buffer, int pitch)
@@ -247,4 +263,9 @@ bool Platform::ProcessInput(uint8_t* keys)
     }
 
     return quit;
+}
+
+void chip8::Platform::SoundOutput(bool on)
+{
+    beeping = on;
 }

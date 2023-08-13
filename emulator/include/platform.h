@@ -23,6 +23,7 @@
 #pragma once
 
 #include "SDL2/SDL.h"
+#include <thread>
 
 namespace chip8
 {
@@ -30,7 +31,7 @@ namespace chip8
 class Platform
 {
 public:
-    Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight);
+    Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight, int cycleTime);
 
     ~Platform();
 
@@ -38,10 +39,16 @@ public:
 
     bool ProcessInput(uint8_t* keys);
 
+    void SoundOutput(bool on);
+
 private:
     SDL_Window* window{};
     SDL_Renderer* renderer{};
     SDL_Texture* texture{};
+
+    std::thread beepThread;
+    std::atomic<bool> beeping{false};
+    std::atomic<bool> close{false};
 };
 
 }  // namespace chip8
