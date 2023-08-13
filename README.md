@@ -11,6 +11,9 @@ $ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=\PATH\TO\vcpkg\scripts\buildsystems
 $ cmake --build build
 ```
 
-https://github.com/visviva/chip8/assets/72554879/160fb1c6-b46f-4768-92eb-611b13b66664
+
+https://github.com/visviva/chip8/assets/72554879/4bb5a194-c4a5-4be9-a795-d563b45ba200
+
+
 
 Get awesome games from [here](https://github.com/dmatlack/chip8/tree/master/roms).
