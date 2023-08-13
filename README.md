@@ -3,4 +3,12 @@
 
 This emulator was developed on Windows 11.
 
+Install [vcpkg](https://vcpkg.io/en/index.html) and run cmake as described [here](https://learn.microsoft.com/en-us/vcpkg/examples/manifest-mode-cmake) or build it using [Visual Studio](https://devblogs.microsoft.com/cppblog/vcpkg-is-now-included-with-visual-studio/).
+
+To build it with CMake:
+```sh
+$ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=\PATH\TO\vcpkg\scripts\buildsystems\vcpkg.cmake
+$ cmake --build build
+```
+
 Get awesome games from [here](https://github.com/dmatlack/chip8/tree/master/roms).
